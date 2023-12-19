@@ -33,12 +33,18 @@ class CartController extends Controller
     
     public function updateCart(Request $request)
     {
-        if($request->id && $request->quantity){
-            $cart = session()->get('cart');
-            $cart[$request->id]["product_quantity"] = $request->quantity;
-            session()->put('cart', $cart);
-            session()->flash('success', 'Product added to cart.');
+        foreach($request['req'] as $id=>$quantity)
+        {
+            
+            if($id != 0)
+            {
+                $cart = session()->get('cart');
+                $cart[$id]["product_quantity"] = $quantity;
+                session()->put('cart', $cart);
+            }
         }
+        $msg="Cart Updated";
+        return $msg;
     }
   
     public function deleteProduct(Request $request)
@@ -55,6 +61,8 @@ class CartController extends Controller
 
     public function cart(Request $request)
     {
+        
+
         $carts = session()->get('cart');
         if(!empty($carts))
         {
@@ -73,6 +81,9 @@ class CartController extends Controller
 
     public function checkout(Request $request)
     {
+        $request->validate([
+            'shipping' => 'required'
+        ]);
         $carts = session()->get('cart');
         if(!empty($carts))
         {
@@ -85,8 +96,9 @@ class CartController extends Controller
         {
             $carts=array();
         }
+        $shipping=$request['shipping'];
         
-        return view("frontend/checkout", compact("carts"));
+        return view("frontend/checkout", compact("carts","shipping"));
     }
 
     public function confirmation(Request $request)

@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\PaymentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,13 +27,17 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::group(['middleware' => 'auth'], function () {
     Route::get('dashboard', [CartController::class, 'index'])->name('dashboard');
     Route::get('cart', [CartController::class, 'cart'])->name('cart');
-    Route::get('checkout', [CartController::class, 'checkout'])->name('checkout');
+    Route::post('checkout', [CartController::class, 'checkout'])->name('checkout');
     Route::get('confirmation', [CartController::class, 'confirmation'])->name('confirmation');
     Route::get('productview', [CartController::class, 'productview'])->name('productview');
 
     Route::get('product/{id}', [CartController::class, 'addProducttoCart'])->name('addcart');
     Route::patch('updatecart', [CartController::class, 'updateCart'])->name('updatecart');
     Route::delete('deletecart', [CartController::class, 'deleteProduct'])->name('deletecart');
+
+    Route::get('/payment/{price}', [PaymentController::class, 'charge'])->name('goToPayment');
+
+    Route::post('payment/process-payment/{price}', [PaymentController::class, 'processPayment'])->name('processPayment');
 
 });
 

@@ -1,9 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.app')
+@section('content')
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="csrf-token" content="{{ csrf_token() }}" />
   <title>Aroma Shop - Cart</title>
 	<link rel="icon" href="img/Fevicon.png" type="image/png">
   <link rel="stylesheet" href="vendors/bootstrap/bootstrap.min.css">
@@ -18,63 +19,7 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <!--================ Start Header Menu Area =================-->
-	<header class="header_area">
-    <div class="main_menu">
-      <nav class="navbar navbar-expand-lg navbar-light">
-        <div class="container">
-          <a class="navbar-brand logo_h" href="index.html"><img src="img/logo.png" alt=""></a>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
-            <ul class="nav navbar-nav menu_nav ml-auto mr-auto">
-              <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-              <li class="nav-item active submenu dropdown">
-                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                  aria-expanded="false">Shop</a>
-                <ul class="dropdown-menu">
-                <li class="nav-item"><a class="nav-link" href="category.html">Shop Category</a></li>
-                  <li class="nav-item"><a class="nav-link" href="{{ route('productview') }}">Product Details</a></li>
-                  <li class="nav-item"><a class="nav-link" href="{{ route('checkout') }}">Product Checkout</a></li>
-                  <li class="nav-item"><a class="nav-link" href="{{ route('confirmation') }}">Confirmation</a></li>
-                  <li class="nav-item"><a class="nav-link" href="{{ route('cart') }}">Shopping Cart</a></li>
-                </ul>
-							</li>
-              <li class="nav-item submenu dropdown">
-                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                  aria-expanded="false">Blog</a>
-                <ul class="dropdown-menu">
-                  <li class="nav-item"><a class="nav-link" href="blog.html">Blog</a></li>
-                  <li class="nav-item"><a class="nav-link" href="register.html">Register</a></li>
-                  <li class="nav-item"><a class="nav-link" href="single-blog.html">Blog Details</a></li>
-                </ul>
-							</li>
-							<li class="nav-item submenu dropdown">
-                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                  aria-expanded="false">Pages</a>
-                <ul class="dropdown-menu">
-                  <li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
-                  <li class="nav-item"><a class="nav-link" href="tracking-order.html">Tracking</a></li>
-                </ul>
-              </li>
-              <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
-            </ul>
-
-            <ul class="nav-shop">
-              <li class="nav-item"><button><i class="ti-search"></i></button></li>
-              <li class="nav-item"><button><i class="ti-shopping-cart"></i><a href="{{ route('cart') }}" class="nav-shop__circle">{{ (!empty(session()->get('cart'))) ? count(session()->get('cart')) : 0 }}</a></button> </li>
-              <li class="nav-item"><a class="button button-header" href="#">Buy Now</a></li>
-            </ul>
-          </div>
-        </div>
-      </nav>
-    </div>
-  </header>
-	<!--================ End Header Menu Area =================-->
+  
 
 	<!-- ================ start banner area ================= -->	
 	<section class="blog-banner-area" id="category">
@@ -102,8 +47,19 @@
   @else
   <section class="cart_area">
       <div class="container">
+      @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
           <div class="cart_inner">
               <div class="table-responsive">
+                <form action="checkout" method="post" name="updatefrm">
+                @csrf
                   <table class="table">
                       <thead>
                           <tr>
@@ -115,8 +71,8 @@
                       </thead>
                       <tbody>
                       <span style="display:none">{{ $subtotal = 0 }}</span>
-                        @foreach($carts as $cart)
-                          <tr>
+                        @foreach($carts as $k=>$cart)
+                          <tr id="cart{{ $k }}">
                               <td>
                                   <div class="media">
                                       <div class="d-flex">
@@ -132,11 +88,11 @@
                               </td>
                               <td>
                                   <div class="product_count">
-                                      <input type="text" name="qty" id="sst" maxlength="12" value="{{ $cart['product_quantity'] }}" title="Quantity:"
+                                      <input type="text" name="qty{{ $k }}" id="sst{{ $k }}" maxlength="12" value="{{ $cart['product_quantity'] }}" title="Quantity:"
                                           class="input-text qty">
-                                      <button onclick="var result = document.getElementById('sst'); var sst = result.value; if( !isNaN( sst )) result.value++;return false;"
+                                      <button onclick="var result = document.getElementById('sst{{ $k }}'); var sst = result.value; if( !isNaN( sst )) result.value++;return false;"
                                           class="increase items-count" type="button"><i class="lnr lnr-chevron-up"></i></button>
-                                      <button onclick="var result = document.getElementById('sst'); var sst = result.value; if( !isNaN( sst ) &amp;&amp; sst > 0 ) result.value--;return false;"
+                                      <button onclick="var result = document.getElementById('sst{{ $k }}'); var sst = result.value; if( !isNaN( sst ) &amp;&amp; sst > 0 ) result.value--;return false;"
                                           class="reduced items-count" type="button"><i class="lnr lnr-chevron-down"></i></button>
                                   </div>
                               </td>
@@ -149,7 +105,7 @@
                          
                           <tr class="bottom_button">
                               <td>
-                                  <a class="button" href="#">Update Cart</a>
+                                  <button type="button" class="btn btn-primary" onclick="alert('adefewfw');updatecart()">Update Cart</button>
                               </td>
                               <td>
 
@@ -214,12 +170,13 @@
                               <td>
                                   <div class="checkout_btn_inner d-flex align-items-center">
                                       <a class="gray_btn" href="{{ route('dashboard') }}">Continue Shopping</a>
-                                      <a class="primary-btn ml-2" href="{{ route('checkout') }}">Proceed to checkout</a>
+                                      <input type="submit" class="primary-btn ml-2" value="Proceed to checkout">
                                   </div>
                               </td>
                           </tr>
                       </tbody>
                   </table>
+                  </form>
               </div>
           </div>
       </div>
@@ -329,5 +286,36 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
   <script src="vendors/jquery.ajaxchimp.min.js"></script>
   <script src="vendors/mail-script.js"></script>
   <script src="js/main.js"></script>
+
+  <script>
+    $.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+    });
+    function updatecart()
+    {
+      var cnt= "{{ count($carts) }}";
+      var reqarray=[];
+      for(var i=1;i<=cnt;i++)
+      {
+        
+        var quantity=$("#cart"+i+" #sst"+i).val();
+        reqarray[i]=quantity;
+        console.log("QUANTITY"+i,quantity);
+        
+      }
+      $.ajax({
+          method: "PATCH",
+          url: "updatecart",
+          data: { req:reqarray }
+        })
+          .done(function( msg ) {
+            alert( "Data Saved: " + msg );
+            location.reload();
+          });
+
+    }
+  </script>
 </body>
-</html>
+@endsection
