@@ -97,6 +97,7 @@ class PaymentController extends Controller
             
         }
         session()->forget('cart');
+        session()->flash('success', 'Order successfully created.');
         return redirect('dashboard');
     }
 }
