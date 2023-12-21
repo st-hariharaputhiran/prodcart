@@ -46,7 +46,7 @@ class PaymentController extends Controller
         return view('frontend/payment',[
             'user'=>$user,
             'intent' => $user->createSetupIntent(),
-            'price' => $request->stotal,
+            'price' => $request->totalp,
             'prequest' => $request->all()
         ]);
     }
