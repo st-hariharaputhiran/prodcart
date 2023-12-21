@@ -191,7 +191,7 @@
                     <ul class="card-product__imgOverlay">
                       <li><button><i class="ti-search"></i></button></li>
                       <li><button><a href="{{ route('addcart', ['id' => $product->id]) }}"><i class="ti-shopping-cart"></i></a></button></li>
-                      <li><button><i class="ti-heart"></i></button></li>
+                      <li><button><a href="{{ route('productdetail', ['id' => $product->id]) }}"><i class="ti-heart"></i></a></button></li>
                     </ul>
                   </div>
                   <div class="card-body">

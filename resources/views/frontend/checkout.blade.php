@@ -1,9 +1,11 @@
 @extends('layouts.app')
 @section('content')
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="csrf-token" content="{{ csrf_token() }}" />
   <title>Aroma Shop - Checkout</title>
 	<link rel="icon" href="img/Fevicon.png" type="image/png">
 
@@ -45,37 +47,61 @@
   <!--================Checkout Area =================-->
   <section class="checkout_area section-margin--small">
     <div class="container">
-        
+    
         <div class="cupon_area">
+            <div>
+                <h3>Available Coupons</h3>
+                <ul>
+                    @foreach($coupons as $coupon)
+                    <li>{{ $coupon->coupon_code }}</li>
+                    @endforeach
+                </ul>
+            </div>
             <div class="check_title">
                 <h2>Have a coupon? <a href="#">Click here to enter your code</a></h2>
             </div>
-            <input type="text" placeholder="Enter coupon code">
-            <a class="button button-coupon" href="#">Apply Coupon</a>
+            <input type="text" name="ccode" id="ccode" placeholder="Enter coupon code">
+            <a class="button button-coupon" onclick="apcoupon()" href="#">Apply Coupon</a>
         </div>
         <div class="billing_details">
             <div class="row">
                 <div class="col-lg-8">
                     <h3>Billing Details</h3>
-                    <form class="row contact_form" action="#" method="post">
+                    <form class="row contact_form" action="{{ route('goToPayment') }}" method="post">
+                    @csrf
                         <div class="col-md-6 form-group p_star">
-                            <input type="text" class="form-control" id="first" name="fname">
+                            <input type="text" class="form-control" id="first" name="fname" value="{{ old('fname') }}">
                             <span class="placeholder" data-placeholder="First name"></span>
+                            @error('fname')
+                            <span style="color:red">{{ $errors->first('fname') }}</span>
+                            @enderror
                         </div>
                         <div class="col-md-6 form-group p_star">
-                            <input type="text" class="form-control" id="last" name="lname">
+                            <input type="text" class="form-control" id="last" name="lname" value="{{ old('lname') }}">
                             <span class="placeholder" data-placeholder="Last name"></span>
+                            @error('lname')
+                            <span style="color:red">{{ $errors->first('lname') }}</span>
+                            @enderror
                         </div>
                         <div class="col-md-12 form-group">
-                            <input type="text" class="form-control" id="company" name="company" placeholder="Company name">
+                            <input type="text" class="form-control" id="company" name="company" placeholder="Company name" value="{{ old('company') }}">
+                            @error('company')
+                            <span style="color:red">{{ $errors->first('company') }}</span>
+                            @enderror
                         </div>
                         <div class="col-md-6 form-group p_star">
-                            <input type="text" class="form-control" id="pnumber" name="pnumber">
+                            <input type="text" class="form-control" id="pnumber" name="pnumber" value="{{ old('pnumber') }}">
                             <span class="placeholder" data-placeholder="Phone number"></span>
+                            @error('pnumber')
+                            <span style="color:red">{{ $errors->first('pnumber') }}</span>
+                            @enderror
                         </div>
                         <div class="col-md-6 form-group p_star">
-                            <input type="text" class="form-control" id="email" name="compemailany">
+                            <input type="text" class="form-control" id="email" name="compemailany" value="{{ old('compemailany') }}">
                             <span class="placeholder" data-placeholder="Email Address"></span>
+                            @error('compemailany')
+                            <span style="color:red">{{ $errors->first('compemailany') }}</span>
+                            @enderror
                         </div>
                         <div class="col-md-12 form-group p_star">
                             <select name="country" class="country_select">
@@ -83,18 +109,26 @@
                                 <option value="2">Country</option>
                                 <option value="4">Country</option>
                             </select>
+                            
                         </div>
                         <div class="col-md-12 form-group p_star">
-                            <input type="text" class="form-control" id="add1" name="add1">
+                            <input type="text" class="form-control" id="add1" name="add1" value="{{ old('add1') }}">
                             <span class="placeholder" data-placeholder="Address line 01"></span>
+                            @error('add1')
+                            <span style="color:red">{{ $errors->first('add1') }}</span>
+                            @enderror
                         </div>
                         <div class="col-md-12 form-group p_star">
-                            <input type="text" class="form-control" id="add2" name="add2">
+                            <input type="text" class="form-control" id="add2" name="add2" value="{{ old('add2') }}">
                             <span class="placeholder" data-placeholder="Address line 02"></span>
+                            
                         </div>
                         <div class="col-md-12 form-group p_star">
-                            <input type="text" class="form-control" id="city" name="city">
+                            <input type="text" class="form-control" id="city" name="city" value="{{ old('city') }}">
                             <span class="placeholder" data-placeholder="Town/City"></span>
+                            @error('city')
+                            <span style="color:red">{{ $errors->first('city') }}</span>
+                            @enderror
                         </div>
                         <div class="col-md-12 form-group p_star">
                             <select name="district" class="country_select">
@@ -102,12 +136,16 @@
                                 <option value="2">District</option>
                                 <option value="4">District</option>
                             </select>
+                           
                         </div>
                         <div class="col-md-12 form-group">
-                            <input type="text" class="form-control" id="zip" name="zip" placeholder="Postcode/ZIP">
+                            <input type="text" class="form-control" id="zip" name="zip" placeholder="Postcode/ZIP" value="{{ old('zip') }}">
+                            @error('zip')
+                            <span style="color:red">{{ $errors->first('zip') }}</span>
+                            @enderror
                         </div>
                         
-                    </form>
+                    
                 </div>
                 <div class="col-lg-4">
                     <div class="order_box">
@@ -124,8 +162,7 @@
                         <ul class="list list_2">
                             <li><a href="#">Subtotal <span>{{ $subtotal }}</span></a></li>
                             <li><a href="#">Shipping <span>Flat rate: {{ $shipping }}</span></a></li>
-                            <li><a href="#">Total <span>{{ $subtotal+$shipping
-                               }}</span></a></li>
+                            <li><a href="#" id="ptotal">Total <span>{{ $subtotal+$shipping }}</span></a></li>
                         </ul>
                         <div class="payment_item">
                             <div class="radion_btn">
@@ -137,9 +174,11 @@
                                 Store Postcode.</p>
                         </div>
                         <div class="payment_item active">
-                        <a href="{{route('goToPayment', [ $subtotal+$shipping ])}}"><button>Process payment of {{ $subtotal+$shipping }}</button></a> &nbsp;
+                        <input type="hidden" name="stotal" value="{{ $subtotal  }}">
+                        <input type="hidden" name="totalp" id="totalp" value="{{ $subtotal+$shipping  }}">
+                        <button type="submit">Process payment of <span id="pptotal">{{ $subtotal+$shipping }}</span></button> &nbsp;
                         </div>
-                        
+                        </form> 
                     </div>
                 </div>
             </div>
@@ -250,5 +289,31 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
   <script src="vendors/jquery.ajaxchimp.min.js"></script>
   <script src="vendors/mail-script.js"></script>
   <script src="js/main.js"></script>
+  <script>
+    function apcoupon()
+    {
+      var ccode=$("#ccode").val();
+      $.ajax({
+          method: "POST",
+          url: "applycoupon",
+          data: { 
+            ccode:ccode,
+            _token : "{{ csrf_token() }}"  
+        }
+        })
+          .done(function( msg ) {
+            if(typeof parseInt(msg) === 'number'){
+                $("#ptotal").text(msg);
+                $("#pptotal").text(msg);
+                $("#totalp").val(msg);
+            }
+            else
+            {
+                alert( "Data Saved: " + msg );
+            }
+          });
+
+    }
+  </script>
 </body>
 @endsection

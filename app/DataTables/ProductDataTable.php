@@ -30,7 +30,7 @@ class ProductDataTable extends DataTable
             ->editColumn('action', function ($model) {
                 $action = '<a href="'.route('products.edit', $model->id).'" class="badge btn-success btn-sm" title="Edit"><i class="fa fa-edit"></i></a>&nbsp;';
                 
-                $action .= '<a href="javascript:void(0);" class="badge btn-danger btn-sm btn-delete" data-id="'.$model->id.'" data-model="product" data-loading-text="<i class=\'fa fa-spin fa-spinner\'></i> Please Wait..." title="Delete"><i class="fa fa-trash"></i></a>';
+                $action .= '<a href="javascript:void(0);" class="badge btn-danger btn-sm btn-delete" data-id="'.$model->id.'" data-model="products" data-loading-text="<i class=\'fa fa-spin fa-spinner\'></i> Please Wait..." title="Delete"><i class="fa fa-trash"></i></a>';
 
                 return $action;
             })

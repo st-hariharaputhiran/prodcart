@@ -58,7 +58,7 @@
 @endif
           <div class="cart_inner">
               <div class="table-responsive">
-                <form action="checkout" method="post" name="updatefrm">
+                <form action="checkout" method="get" name="updatefrm">
                 @csrf
                   <table class="table">
                       <thead>
@@ -288,11 +288,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
   <script src="js/main.js"></script>
 
   <script>
-    $.ajaxSetup({
-    headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    }
-    });
+    
     function updatecart()
     {
       var cnt= "{{ count($carts) }}";
@@ -308,7 +304,10 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
       $.ajax({
           method: "PATCH",
           url: "updatecart",
-          data: { req:reqarray }
+          data: { 
+            req:reqarray,
+            _token : "{{ csrf_token() }}" 
+        }
         })
           .done(function( msg ) {
             alert( "Data Saved: " + msg );

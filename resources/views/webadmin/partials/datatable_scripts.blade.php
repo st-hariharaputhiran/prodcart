@@ -9,7 +9,7 @@
     <script src="{{ asset('js/plugins/datatable_buttons.server-side.js') }}"></script>
     <script src="{{ asset('js/plugins/sweetalert.js') }}"></script>
     <script src="https://cdn.datatables.net/rowreorder/1.2.0/js/dataTables.rowReorder.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
     {!! $dataTable->scripts() !!}
     @if(!empty($assignedDataTable))
     {!! $assignedDataTable->scripts() !!}
@@ -18,6 +18,7 @@
     {!! $nonAssignedDataTable->scripts() !!}
     @endif
     <script type="text/javascript">
+        
         var baseurl = "{{ url('/') }}";
         $(document).ready(function () {
             $('.dataTable').find('thead tr:eq(0)').addClass('text-start text-dark fw-black fs-7 text-uppercase gs-0');
@@ -48,7 +49,8 @@
                             $('#datatable-buttons').DataTable().draw(false);
                         },
                         error: function (jqXhr) {
-                            swalError(jqXhr);
+                            alert($this.data('model') + '/' + $this.data('id'));
+                            swal("Error",jqXhr);
                         }
                     });
                 });

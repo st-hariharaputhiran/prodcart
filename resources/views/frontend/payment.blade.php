@@ -32,6 +32,7 @@
 </div>
 <label for="card-holder-name">Card Holder Name</label>
 <input id="card-holder-name" type="text" value="">
+<input type="hidden" name="prequest" value="{{ json_encode($prequest) }}">
 @csrf
 <div class="form-row">
 <label for="card-element">Credit or debit card</label>

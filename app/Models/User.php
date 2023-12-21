@@ -56,4 +56,9 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    public function coupons()
+    {
+        return $this->belongsToMany( Coupon::class, 'coupon_user', 'user_id', 'coupon_id');
+    }
 }

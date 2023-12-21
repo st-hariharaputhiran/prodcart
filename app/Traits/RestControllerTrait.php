@@ -10,6 +10,7 @@ use Illuminate\Http\Response;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
+use App\Models\ProductOrders;
 use Validator;
 
 trait RestControllerTrait

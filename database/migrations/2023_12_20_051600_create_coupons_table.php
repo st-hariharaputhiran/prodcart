@@ -11,12 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('product_images', function (Blueprint $table) {
+        Schema::create('coupons', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('product_id')->unsigned();
-            $table->foreign('product_id')->references('id')
-            ->on('products')->onDelete('cascade');
-            $table->string('image_url');
+            $table->string('coupon_title');
+            $table->string('coupon_code')->unique();
+            $table->float('discount_amount');
+            $table->enum('coupon_type' , ['percent'  , 'fixed']);
+            $table->date('start_at');
+            $table->date('expire_at');
             $table->timestamps();
         });
     }
@@ -26,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('product_images');
+        Schema::dropIfExists('coupons');
     }
 };
