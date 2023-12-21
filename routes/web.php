@@ -33,7 +33,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('confirmation', [CartController::class, 'confirmation'])->name('confirmation');
     Route::get('productview', [CartController::class, 'productview'])->name('productview');
 
-    Route::get('products/{id}', [CartController::class, 'addProducttoCart'])->name('addcart');
+    Route::get('product/{id}', [CartController::class, 'addProducttoCart'])->name('addcart');
     Route::get('productdetail/{id}', [CartController::class, 'productdetail'])->name('productdetail');
     Route::get('myorders', [CartController::class, 'myorders'])->name('myorders');
     Route::patch('updatecart', [CartController::class, 'updateCart'])->name('updatecart');
@@ -46,9 +46,18 @@ Route::group(['middleware' => 'auth'], function () {
 
 Route::group(['middleware' => ['auth','admin'],'prefix' => 'webadmin'], function () {
     Route::get('home', [HomeController::class, 'adminHome']);
-    Route::resource('products', ProductController::class);
-    Route::resource('productorders', OrderController::class);
-    Route::resource('coupons', CouponController::class);
+    Route::resource('products', ProductController::class)->names([
+        'index' => 'products.index',
+        // Add other route names if needed
+    ]);
+    Route::resource('productorders', OrderController::class)->names([
+        'index' => 'productorders.index',
+        // Add other route names if needed
+    ]);
+    Route::resource('coupons', CouponController::class)->names([
+        'index' => 'coupons.index',
+        // Add other route names if needed
+    ]);
  });
 
 

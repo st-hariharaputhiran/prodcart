@@ -14,7 +14,7 @@
         <div class="card mb-5 mb-xl-10">
         <div class="card-header border-0 cursor-pointer">
             <div class="card-title m-0">
-                <h3 class="fw-boldest m-0">Products</h3>
+                <h3 class="fw-boldest m-0">Coupons</h3>
             </div>
         </div>
         <div class="card-body border-top p-9">
