@@ -4,8 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Coupon;
 use Illuminate\Http\Request;
+use App\Traits\RestControllerTrait;
 
-class CouponController extends Controller
+class FOO extends Controller
+{
+    use RestControllerTrait;
+}
+
+class CouponController extends FOO
 {
     public $modelClass = Coupon::class;
 

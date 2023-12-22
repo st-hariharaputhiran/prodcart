@@ -5,13 +5,22 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\ProductImages;
 use App\Models\ProductOrders;
+use App\Traits\RestControllerTrait;
 use Illuminate\Http\Request;
 
-class ProductController extends Controller
+class FOO extends Controller
 {
-    public $modelClass = Product::class;
+    use RestControllerTrait;
+}
+class ProductController extends FOO
+{
+    
+    
 
-    public $messageClass = 'Product';
+    
+        public $modelClass = Product::class;
+        public $messageClass = 'Product';
+    
     
     protected function _validation_rules( $request, $id ): array {
         $rules = [
