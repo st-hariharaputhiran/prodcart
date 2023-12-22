@@ -1,6 +1,5 @@
 @extends('layouts.app')
 @section('content')
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -160,9 +159,10 @@
                             @endforeach
                         </ul>
                         <ul class="list list_2">
+                            <li><a href="#">Basic Price <span>{{ ($subtotal*60)/100 }}</span></a></li>
                             <li><a href="#">Subtotal <span>{{ $subtotal }}</span></a></li>
                             <li><a href="#">Shipping <span>Flat rate: {{ $shipping }}</span></a></li>
-                            <li><a href="#" id="ptotal">Total <span>{{ $subtotal+$shipping }}</span></a></li>
+                            <li><a href="#" >Total <span id="ptotal">{{ ($potype == "basic") ? (($subtotal*60)/100)+$shipping : $subtotal+$shipping }}</span></a></li>
                         </ul>
                         <div class="payment_item">
                             <div class="radion_btn">
@@ -175,8 +175,9 @@
                         </div>
                         <div class="payment_item active">
                         <input type="hidden" name="stotal" value="{{ $subtotal  }}">
-                        <input type="hidden" name="totalp" id="totalp" value="{{ $subtotal+$shipping  }}">
-                        <button type="submit">Process payment of <span id="pptotal">{{ $subtotal+$shipping }}</span></button> &nbsp;
+                        <input type="hidden" name="totalp" id="totalp" value="{{ ($potype == 'basic') ? (($subtotal*60)/100)+$shipping : $subtotal+$shipping }}">
+                        <button type="submit">Process payment of <span id="pptotal">{{ ($potype == "basic") ? (($subtotal*60)/100)+$shipping : $subtotal+$shipping }}</span></button> &nbsp;
+                        <div> <h5>Due Payment <span>{{ ($subtotal*40)/100 }}</span></h5></div>
                         </div>
                         </form> 
                     </div>
@@ -293,11 +294,13 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
     function apcoupon()
     {
       var ccode=$("#ccode").val();
+      var potype= "{{ $potype }}";
       $.ajax({
           method: "POST",
           url: "applycoupon",
           data: { 
             ccode:ccode,
+            potype:potype,
             _token : "{{ csrf_token() }}"  
         }
         })
@@ -306,6 +309,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
                 $("#ptotal").text(msg);
                 $("#pptotal").text(msg);
                 $("#totalp").val(msg);
+                alert( "Coupon Applied");
             }
             else
             {

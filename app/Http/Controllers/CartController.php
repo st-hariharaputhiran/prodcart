@@ -88,8 +88,13 @@ class CartController extends Controller
 
     public function checkout(Request $request)
     {
+        
+            dd($request);
+        
+        
         $request->validate([
-            'shipping' => 'required'
+            'shipping' => 'required',
+            'potype' => 'required'
         ]);
         $carts = session()->get('cart');
         $subtotal=0;
@@ -106,8 +111,16 @@ class CartController extends Controller
             $carts=array();
         }
         $this->shipping=$shipping=$request['shipping'];
-        $totalprice=$subtotal+$shipping;
+        $potype=$request['potype'];
         
+        if($potype == "basic")
+        {
+            $totalprice=(($subtotal*60)/100)+$shipping;
+        }
+        else
+        {
+            $totalprice=$subtotal+$shipping;
+        }
         if($this->totalpriceup == 0)
         {
             session()->put('totalprice', $totalprice);
@@ -119,7 +132,7 @@ class CartController extends Controller
         session()->save();
         $coupons = Coupon::with('users')->get();
         
-        return view("frontend/checkout", compact("carts","shipping","coupons"));
+        return view("frontend/checkout", compact("carts","shipping","coupons","potype"));
     }
 
     public function productdetail($id)
@@ -131,6 +144,7 @@ class CartController extends Controller
     public function applycoupon(Request $request)
     {
         $ccode=$request['ccode'];
+        $potype=$request['potype'];
         $user = Auth::user();
         $coupons = Coupon::withCount('users')->where('coupon_code','LIKE','%'.$ccode.'%')->get();
         foreach ($coupons as $coupon) { 

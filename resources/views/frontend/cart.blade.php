@@ -129,10 +129,66 @@
 
                               </td>
                               <td>
+                                  <h5>Basic Price</h5>
+                              </td>
+                              <td>
+                                  <h5>{{ (($subtotal)*60)/100 }}</h5>
+                              </td>
+                          </tr>
+                          <tr>
+                              <td>
+
+                              </td>
+                              <td>
+
+                              </td>
+                              <td>
+                                  <h5>Due Price</h5>
+                              </td>
+                              <td>
+                                  <h5>{{ (($subtotal)*40)/100 }}</h5>
+                              </td>
+                          </tr>
+                          <tr>
+                              <td>
+
+                              </td>
+                              <td>
+
+                              </td>
+                              <td>
                                   <h5>Subtotal</h5>
                               </td>
                               <td>
                                   <h5>{{ $subtotal }}</h5>
+                              </td>
+                          </tr>
+                          <tr>
+                              <td>
+
+                              </td>
+                              <td>
+
+                              </td>
+                              <td>
+                                  <h5>Purchase with Basic Price</h5>
+                              </td>
+                              <td>
+                                  <h5><input type="radio" name="potype" value="basic"></h5>
+                              </td>
+                          </tr>
+                          <tr>
+                              <td>
+
+                              </td>
+                              <td>
+
+                              </td>
+                              <td>
+                                  <h5>Purchase with Total Price</h5>
+                              </td>
+                              <td>
+                                  <h5><input type="radio" name="potype" value="total"></h5>
                               </td>
                           </tr>
                           <tr class="shipping_area">

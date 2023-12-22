@@ -41,14 +41,19 @@ class PaymentController extends Controller
         // if($validator->fails()) {
         //     return Redirect::back()->withErrors($validator)->withInput($request->all());
         // }
+        if ($validator->fails()) {
+            return Redirect::back()->withErrors($validator)->withInput($request->prequest);
         
-        $user = Auth::user();
-        return view('frontend/payment',[
+        } else {
+            $user = Auth::user();
+            return view('frontend/payment',[
             'user'=>$user,
             'intent' => $user->createSetupIntent(),
             'price' => $request->totalp,
             'prequest' => $request->all()
         ]);
+        }
+        
     }
 
     public function processPayment(Request $request, $price)
